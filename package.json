@@ -2,7 +2,7 @@
   "name": "dot-connecting-example",
   "version": "1.0.0",
   "main": "index.js",
-  "author": "j-arai <ja.fileonly@gmail.com>",
+  "author": "rascate <ja.fileonly@gmail.com>",
   "license": "MIT",
   "scripts": {
     "start": "webpack-dev-server --hot",
