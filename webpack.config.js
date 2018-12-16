@@ -48,7 +48,7 @@ module.exports = {
         })
     ].concat(htmlPlugins),
     output: {
-        filename: 'js/[name].bundle.js',
+        filename: 'js/[name].js',
         path: path.resolve(__dirname, 'dist')
     },
     devServer: {
@@ -99,12 +99,8 @@ module.exports = {
                 }]
             },
             {
-                test: /\.html$/,
-                use: [
-                    {
-                        loader: "html-loader"
-                    }
-                ]
+                test: /\.ejs$/,
+                use: 'ejs-compiled-loader'
             }
         ]
     }
