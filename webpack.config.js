@@ -2,29 +2,51 @@ const path = require('path');
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
+const fs = require("fs");
+
+function generateHtmlPlugins (templateDir) {
+    const templateFiles = fs.readdirSync(path.resolve(__dirname, templateDir));
+    return templateFiles.map(item => {
+        const parts = item.split('.');
+        const name = parts[0];
+        const extension = parts[1];
+
+        return new HtmlWebPackPlugin({
+            filename: `${name}.html`,
+            template: path.resolve(__dirname, `${templateDir}/${name}.${extension}`),
+            inject: 'body',
+            chunks: [`${name}`]
+        })
+    });
+}
+
+function generateEntries (entryDir) {
+    const entryFiles = fs.readdirSync(path.resolve(__dirname, entryDir));
+
+    let entries = {};
+
+    entryFiles.map(item => {
+        const parts = item.split('.');
+        const name = parts[0];
+        const extension = parts[1];
+
+        entries[`${name}`] = `${entryDir}/${name}.${extension}`
+    });
+
+    return entries;
+}
+
+const htmlPlugins = generateHtmlPlugins('./src/templates');
+const entries = generateEntries('./src/js');
+
 module.exports = {
     mode: "development",
-    entry: {
-        index: './src/js/index.js',
-        page1: './src/js/page1.js'
-    },
+    entry: entries,
     plugins: [
-        new HtmlWebPackPlugin({
-            template: "./src/index.html",
-            filename: "./index.html",
-            inject: 'body',
-            chunks: ['index'],
-        }),
-        new HtmlWebPackPlugin({
-            template: "./src/page1.html",
-            filename: "./page1.html",
-            inject: 'body',
-            chunks: ['page1'],
-        }),
         new MiniCssExtractPlugin({
             filename: "css/[name].css"
         })
-    ],
+    ].concat(htmlPlugins),
     output: {
         filename: 'js/[name].bundle.js',
         path: path.resolve(__dirname, 'dist')
