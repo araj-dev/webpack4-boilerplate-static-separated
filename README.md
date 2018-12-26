@@ -4,7 +4,7 @@
  - *Auto generate* multiple out put html / js / css from directory structure
  - ES6 compile
  - SASS/SCSS compile
- - No template engine (easy to add)
+ - ejs template engine (easy to add page)
 
 ```bash
 yarn install
